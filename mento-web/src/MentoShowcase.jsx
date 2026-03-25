@@ -456,49 +456,64 @@ function Impact() {
 
 /* ── Demo ────────────────────────────────────────────────────────────────── */
 function Demo() {
-  const [url, setUrl] = useState("https://www.youtube.com/embed/dQw4w9WgXcQ");
-  const [input, setInput] = useState("");
-  function apply() {
-    const raw = input.trim(); if (!raw) return;
-    setUrl(raw.replace("watch?v=", "embed/").replace("youtu.be/", "www.youtube.com/embed/"));
-    setInput("");
-  }
   return (
     <section id="demo" style={{ background: "#06060A", padding: "120px 24px" }}>
-      <div style={{ maxWidth: 900, margin: "0 auto" }}>
-        <Reveal className="text-center">
+      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+        <Reveal>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 16 }}>
             <div style={{ width: 32, height: 1, background: "#E63946" }} />
             <span style={{ fontFamily: "DM Sans", fontSize: 12, color: "#E63946", textTransform: "uppercase", letterSpacing: "0.12em" }}>Live Demo</span>
             <div style={{ width: 32, height: 1, background: "#E63946" }} />
           </div>
           <h2 style={{ fontFamily: "Syne", fontWeight: 800, fontSize: "clamp(36px,5vw,64px)", color: "#fff", margin: "0 0 16px", letterSpacing: "-0.02em", textAlign: "center" }}>See it in action.</h2>
-          <p style={{ fontFamily: "DM Sans", fontSize: 15, color: "rgba(255,255,255,0.35)", textAlign: "center", marginBottom: 48 }}>Real hardware. Real data. Real prediction.</p>
+          <p style={{ fontFamily: "DM Sans", fontSize: 15, color: "rgba(255,255,255,0.35)", textAlign: "center", marginBottom: 56 }}>Real hardware. Real data. Real prediction.</p>
         </Reveal>
 
         <Reveal delay={0.15}>
-          <div style={{ border: "1px solid rgba(255,255,255,0.07)", borderRadius: 24, overflow: "hidden", boxShadow: "0 40px 100px rgba(0,0,0,0.6)" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "12px 20px", background: "rgba(255,255,255,0.03)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-              <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#E63946", opacity: 0.8 }} />
-              <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#FBBF24", opacity: 0.8 }} />
-              <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#34D399", opacity: 0.8 }} />
-              <span style={{ fontFamily: "DM Sans", fontSize: 11, color: "rgba(255,255,255,0.2)", marginLeft: 12 }}>mento-wearable.vercel.app</span>
-            </div>
-            <div style={{ aspectRatio: "16/9" }}>
-              <iframe src={url} title="Mento Demo" style={{ width: "100%", height: "100%", border: "none", display: "block" }}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
-            </div>
-          </div>
+          <div style={{ display: "flex", gap: 20, alignItems: "flex-start", flexWrap: "wrap" }}>
 
-          <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
-            <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && apply()}
-              placeholder="Paste your YouTube link to update…"
-              style={{ flex: 1, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "12px 18px", fontFamily: "DM Sans", fontSize: 13, color: "#fff", outline: "none" }}
-            />
-            <button onClick={apply}
-              style={{ background: "#E63946", color: "#fff", border: "none", borderRadius: 12, padding: "12px 24px", fontFamily: "Syne", fontWeight: 700, fontSize: 13, cursor: "pointer" }}>
-              Update
-            </button>
+            {/* Portrait — Wearable close-up */}
+            <div style={{ flex: "0 0 auto", width: "clamp(200px, 28%, 320px)", display: "flex", flexDirection: "column", gap: 12 }}>
+              <div style={{ border: "1px solid rgba(255,255,255,0.07)", borderRadius: 20, overflow: "hidden", boxShadow: "0 24px 80px rgba(0,0,0,0.6)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "10px 16px", background: "rgba(255,255,255,0.03)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+                  <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#E63946", opacity: 0.8 }} />
+                  <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#FBBF24", opacity: 0.8 }} />
+                  <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#34D399", opacity: 0.8 }} />
+                </div>
+                <video
+                  src="/video1.mp4"
+                  controls
+                  playsInline
+                  style={{ width: "100%", display: "block", background: "#000" }}
+                />
+              </div>
+              <div style={{ textAlign: "center" }}>
+                <p style={{ fontFamily: "Syne", fontWeight: 700, fontSize: 13, color: "#fff", margin: "0 0 4px" }}>Wearable in Use</p>
+                <p style={{ fontFamily: "DM Sans", fontSize: 12, color: "rgba(255,255,255,0.3)", margin: 0 }}>Hardware prototype on-body</p>
+              </div>
+            </div>
+
+            {/* Landscape — App / System demo */}
+            <div style={{ flex: "1 1 0", minWidth: 280, display: "flex", flexDirection: "column", gap: 12 }}>
+              <div style={{ border: "1px solid rgba(255,255,255,0.07)", borderRadius: 20, overflow: "hidden", boxShadow: "0 24px 80px rgba(0,0,0,0.6)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "10px 16px", background: "rgba(255,255,255,0.03)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+                  <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#E63946", opacity: 0.8 }} />
+                  <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#FBBF24", opacity: 0.8 }} />
+                  <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#34D399", opacity: 0.8 }} />
+                </div>
+                <video
+                  src="/video2.mp4"
+                  controls
+                  playsInline
+                  style={{ width: "100%", display: "block", background: "#000" }}
+                />
+              </div>
+              <div style={{ textAlign: "center" }}>
+                <p style={{ fontFamily: "Syne", fontWeight: 700, fontSize: 13, color: "#fff", margin: "0 0 4px" }}>System Demo</p>
+                <p style={{ fontFamily: "DM Sans", fontSize: 12, color: "rgba(255,255,255,0.3)", margin: 0 }}>App, sensors & live data pipeline</p>
+              </div>
+            </div>
+
           </div>
         </Reveal>
       </div>
