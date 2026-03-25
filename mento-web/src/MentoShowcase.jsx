@@ -515,7 +515,7 @@ function Demo() {
                 />
               </div>
               <div style={{ textAlign: "center" }}>
-                <p style={{ fontFamily: "Syne", fontWeight: 700, fontSize: 13, color: "#fff", margin: "0 0 4px" }}>System Demo</p>
+                <p style={{ fontFamily: "Syne", fontWeight: 700, fontSize: 13, color: "#fff", margin: "0 0 4px" }}>System in Use</p>
                 <p style={{ fontFamily: "DM Sans", fontSize: 12, color: "rgba(255,255,255,0.3)", margin: 0 }}>App, sensors & live data pipeline</p>
               </div>
             </div>
