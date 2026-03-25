@@ -1,11 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, useInView, useScroll, useTransform, AnimatePresence } from "framer-motion";
 
-/* ── Google Fonts injected once ─────────────────────────────────────────── */
-const styleTag = document.createElement("style");
-styleTag.innerHTML = `@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap');`;
-document.head.appendChild(styleTag);
-
 /* ── tiny helpers ────────────────────────────────────────────────────────── */
 function useReveal(margin = "-80px") {
   const ref = useRef(null);
@@ -614,18 +609,71 @@ function Proof() {
           </div>
 
           {/* Use cases beyond prevention */}
-          <div style={{ marginTop: 72 }}>
-            <h3 style={{ fontFamily: "Syne", fontWeight: 700, fontSize: 24, color: "#fff", textAlign: "center", marginBottom: 32 }}>Beyond Prevention</h3>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 20 }}>
+          <div style={{ marginTop: 80 }}>
+            <div style={{ textAlign: "center", marginBottom: 48 }}>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+                <div style={{ width: 24, height: 1, background: "rgba(255,255,255,0.2)" }} />
+                <span style={{ fontFamily: "DM Sans", fontSize: 11, color: "rgba(255,255,255,0.3)", textTransform: "uppercase", letterSpacing: "0.12em" }}>What else it solves</span>
+                <div style={{ width: 24, height: 1, background: "rgba(255,255,255,0.2)" }} />
+              </div>
+              <h3 style={{ fontFamily: "Syne", fontWeight: 800, fontSize: "clamp(24px, 3.5vw, 36px)", color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.1 }}>
+                Prevention is just the start.
+              </h3>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16 }}>
               {[
-                { icon: "🏥", title: "Rehabilitation", desc: "Track progress during physiotherapy and post-surgery recovery with real-time biomechanical feedback.", color: "#34D399" },
-                { icon: "🔄", title: "Recovery Monitoring", desc: "Monitor HRV, fatigue levels, and muscle load to optimise rest days and prevent overtraining.", color: "#60A5FA" },
-                { icon: "⚡", title: "Performance Optimisation", desc: "Compare metrics against peer and pro benchmarks to fine-tune training load and technique.", color: "#FBBF24" },
+                {
+                  num: "01",
+                  color: "#34D399",
+                  title: "Rehabilitation",
+                  sub: "Track recovery, not just time.",
+                  desc: "After injury, Mento's EMG and IMU data maps how muscles and joints reload during physiotherapy — so you know when an athlete is truly ready to return, not just when they feel ready.",
+                },
+                {
+                  num: "02",
+                  color: "#60A5FA",
+                  title: "Recovery Monitoring",
+                  sub: "Rest smarter. Train harder.",
+                  desc: "HRV, SpO₂ patterns, and overnight muscle load data tell you whether an athlete recovered from yesterday — or is carrying stress into today's session. Optimise rest days with actual numbers, not guesses.",
+                },
+                {
+                  num: "03",
+                  color: "#A78BFA",
+                  title: "Return-to-Sport Clearance",
+                  sub: "Data says when — not gut feel.",
+                  desc: "Doctors clear athletes on time, not tissue state. Mento's movement symmetry score shows whether the injured limb is loading and firing like the healthy one — before the athlete steps back on the field.",
+                },
+                {
+                  num: "04",
+                  color: "#FBBF24",
+                  title: "Overtraining Prevention",
+                  sub: "Injuries are built over weeks.",
+                  desc: "Most tears don't come from one bad session — they come from four days of accumulated EMG stress no coach ever saw. Mento's rolling risk score catches that build-up before it becomes a breakdown.",
+                },
+                {
+                  num: "05",
+                  color: "#E63946",
+                  title: "Performance Optimisation",
+                  sub: "Benchmark. Adjust. Improve.",
+                  desc: "Six-axis radar scoring against peer and pro athlete benchmarks shows exactly where technique and load management can be tightened — so training effort goes where it actually converts to performance.",
+                },
+                {
+                  num: "06",
+                  color: "#F97316",
+                  title: "Grassroots Access",
+                  sub: "Pro-grade insight. ₹3K price.",
+                  desc: "College squads and district clubs don't have physiologists on the bench. Mento's AI Coach delivers the same pattern recognition elite teams pay lakhs for — at a cost every school can actually afford.",
+                },
               ].map((u) => (
-                <div key={u.title} style={{ border: `1px solid ${u.color}22`, borderRadius: 20, padding: "28px", background: `${u.color}08` }}>
-                  <div style={{ fontSize: 32, marginBottom: 12 }}>{u.icon}</div>
-                  <p style={{ fontFamily: "Syne", fontWeight: 700, fontSize: 16, color: "#fff", margin: "0 0 8px" }}>{u.title}</p>
-                  <p style={{ fontFamily: "DM Sans", fontSize: 13, color: "rgba(255,255,255,0.4)", lineHeight: 1.6, margin: 0 }}>{u.desc}</p>
+                <div key={u.num} style={{ border: "1px solid rgba(255,255,255,0.06)", borderRadius: 20, padding: "32px 28px", background: "rgba(255,255,255,0.015)", position: "relative", overflow: "hidden" }}>
+                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${u.color}, transparent)` }} />
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+                    <span style={{ fontFamily: "Bebas Neue", fontSize: 13, color: u.color, background: `${u.color}18`, border: `1px solid ${u.color}40`, borderRadius: 6, padding: "3px 9px", letterSpacing: "0.06em" }}>{u.num}</span>
+                    <span style={{ fontFamily: "DM Sans", fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: "0.05em" }}>{u.sub}</span>
+                  </div>
+                  <p style={{ fontFamily: "Syne", fontWeight: 800, fontSize: 17, color: u.color, margin: "0 0 12px", letterSpacing: "-0.01em", textShadow: `0 0 24px ${u.color}55` }}>{u.title}</p>
+                  <p style={{ fontFamily: "DM Sans", fontSize: 13, color: "rgba(255,255,255,0.45)", lineHeight: 1.7, margin: 0 }}>{u.desc}</p>
                 </div>
               ))}
             </div>
@@ -640,12 +688,6 @@ function Proof() {
 export default function MentoShowcase() {
   return (
     <div style={{ background: "#06060A", minHeight: "100vh" }}>
-      <style>{`
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
-        body { background: #06060A; -webkit-font-smoothing: antialiased; }
-        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-      `}</style>
       <Nav />
       <Hero />
       <Problem />
