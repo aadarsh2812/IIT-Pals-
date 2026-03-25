@@ -483,6 +483,9 @@ function Demo() {
                 <video
                   src="/video1.mp4"
                   controls
+                  autoPlay
+                  muted
+                  loop
                   playsInline
                   style={{ width: "100%", display: "block", background: "#000" }}
                 />
@@ -504,6 +507,9 @@ function Demo() {
                 <video
                   src="/video2.mp4"
                   controls
+                  autoPlay
+                  muted
+                  loop
                   playsInline
                   style={{ width: "100%", display: "block", background: "#000" }}
                 />
