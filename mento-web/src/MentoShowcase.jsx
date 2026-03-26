@@ -313,6 +313,18 @@ function AppScreens() {
     return () => clearInterval(id);
   }, []);
 
+  // swipe to navigate
+  const touchStartX = useRef(null);
+  function onTouchStart(e) { touchStartX.current = e.touches[0].clientX; }
+  function onTouchEnd(e) {
+    if (touchStartX.current === null) return;
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) {
+      setActive(a => diff > 0 ? Math.min(a + 1, screens.length - 1) : Math.max(a - 1, 0));
+    }
+    touchStartX.current = null;
+  }
+
   return (
     <section id="app" style={{ background: "#06060A", padding: isMobile ? "72px 20px" : "120px 24px" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
@@ -330,16 +342,18 @@ function AppScreens() {
           /* ── Mobile: phone + tap grid ──────────────────────────────────── */
           <Reveal>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 24 }}>
-              {/* phone frame */}
+              {/* phone frame — swipeable */}
               <div style={{ position: "relative", width: 220 }}>
-                <div style={{ border: "1px solid rgba(255,255,255,0.1)", borderRadius: 36, overflow: "hidden", background: "#111", boxShadow: "0 40px 120px rgba(0,0,0,0.8), 0 0 60px rgba(167,139,250,0.15)" }}>
+                <div
+                  onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}
+                  style={{ border: "1px solid rgba(255,255,255,0.1)", borderRadius: 36, overflow: "hidden", background: "#111", boxShadow: "0 40px 120px rgba(0,0,0,0.8), 0 0 60px rgba(167,139,250,0.15)", touchAction: "pan-y", userSelect: "none" }}>
                   <div style={{ height: 20, background: "#0a0a0a", display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <div style={{ width: 60, height: 5, background: "rgba(255,255,255,0.15)", borderRadius: 100 }} />
                   </div>
                   <AnimatePresence mode="wait">
                     <motion.img key={active} src={screens[active].img} alt={screens[active].label}
-                      initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }}
-                      transition={{ duration: 0.35 }} style={{ width: "100%", display: "block" }} />
+                      initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
+                      transition={{ duration: 0.25 }} style={{ width: "100%", display: "block", pointerEvents: "none" }} />
                   </AnimatePresence>
                 </div>
                 {/* progress bar under phone */}
@@ -347,6 +361,11 @@ function AppScreens() {
                   <motion.div key={active} initial={{ width: "0%" }} animate={{ width: "100%" }} transition={{ duration: 8.0, ease: "linear" }}
                     style={{ height: "100%", background: "#A78BFA", borderRadius: 100 }} />
                 </div>
+              </div>
+
+              {/* swipe hint */}
+              <div style={{ textAlign: "center", marginTop: 8 }}>
+                <span style={{ fontFamily: "DM Sans", fontSize: 11, color: "rgba(255,255,255,0.2)", letterSpacing: "0.05em" }}>← swipe to browse →</span>
               </div>
 
               {/* current screen label */}
