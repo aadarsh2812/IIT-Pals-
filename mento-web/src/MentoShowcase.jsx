@@ -490,14 +490,10 @@ function Demo() {
                   style={{ width: "100%", display: "block", background: "#000" }}
                 />
               </div>
-              <div style={{ textAlign: "center" }}>
-                <p style={{ fontFamily: "Syne", fontWeight: 700, fontSize: 13, color: "#fff", margin: "0 0 4px" }}>Wearable in Use</p>
-                <p style={{ fontFamily: "DM Sans", fontSize: 12, color: "rgba(255,255,255,0.3)", margin: 0 }}>Hardware prototype on-body</p>
-              </div>
             </div>
 
             {/* Landscape — App / System demo */}
-            <div style={{ flex: "1 1 0", minWidth: 280, display: "flex", flexDirection: "column", gap: 12 }}>
+            <div style={{ flex: "1 1 0", minWidth: 280 }}>
               <div style={{ border: "1px solid rgba(255,255,255,0.07)", borderRadius: 20, overflow: "hidden", boxShadow: "0 24px 80px rgba(0,0,0,0.6)" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "10px 16px", background: "rgba(255,255,255,0.03)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
                   <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#E63946", opacity: 0.8 }} />
@@ -514,12 +510,13 @@ function Demo() {
                   style={{ width: "100%", display: "block", background: "#000" }}
                 />
               </div>
-              <div style={{ textAlign: "center" }}>
-                <p style={{ fontFamily: "Syne", fontWeight: 700, fontSize: 13, color: "#fff", margin: "0 0 4px" }}>System in Use</p>
-                <p style={{ fontFamily: "DM Sans", fontSize: 12, color: "rgba(255,255,255,0.3)", margin: 0 }}>App, sensors & live data pipeline</p>
-              </div>
             </div>
 
+          </div>
+
+          <div style={{ textAlign: "center", marginTop: 20 }}>
+            <p style={{ fontFamily: "Syne", fontWeight: 700, fontSize: 14, color: "#fff", margin: "0 0 4px" }}>Wearable in Use</p>
+            <p style={{ fontFamily: "DM Sans", fontSize: 12, color: "rgba(255,255,255,0.3)", margin: 0 }}>Hardware prototype on-body — real sensors, real data</p>
           </div>
         </Reveal>
       </div>
