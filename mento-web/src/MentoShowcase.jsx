@@ -2,6 +2,18 @@ import { useState, useRef, useEffect } from "react";
 import { motion, useInView, useScroll, useTransform, AnimatePresence } from "framer-motion";
 
 /* ── tiny helpers ────────────────────────────────────────────────────────── */
+function useMobile() {
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth < 768 : false
+  );
+  useEffect(() => {
+    const fn = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", fn);
+    return () => window.removeEventListener("resize", fn);
+  }, []);
+  return isMobile;
+}
+
 function useReveal(margin = "-80px") {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin });
@@ -43,6 +55,7 @@ function CountUp({ target, suffix = "", duration = 2000 }) {
 /* ── Nav ─────────────────────────────────────────────────────────────────── */
 function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const isMobile = useMobile();
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", fn);
@@ -58,19 +71,19 @@ function Nav() {
         borderBottom: scrolled ? "1px solid rgba(255,255,255,0.06)" : "none",
       }}
     >
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 68 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <img src="/Atomic minds logo.webp" alt="Atomic Minds" style={{ height: 42, width: "auto", objectFit: "contain", background: "#fff", padding: "2px 6px", borderRadius: 4 }} />
-          <span style={{ fontFamily: "Syne", fontWeight: 800, fontSize: 18, color: "#fff", letterSpacing: "-0.02em" }}>Mento</span>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px", display: "flex", alignItems: "center", justifyContent: "space-between", height: isMobile ? 58 : 68 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <img src="/Atomic minds logo.webp" alt="Atomic Minds" style={{ height: isMobile ? 32 : 42, width: "auto", objectFit: "contain", background: "#fff", padding: "2px 6px", borderRadius: 4 }} />
+          <span style={{ fontFamily: "Syne", fontWeight: 800, fontSize: isMobile ? 16 : 18, color: "#fff", letterSpacing: "-0.02em" }}>Mento</span>
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
-          {["Problem", "Solution", "App", "Impact"].map(l => (
+        <div style={{ display: "flex", alignItems: "center", gap: isMobile ? 12 : 32 }}>
+          {!isMobile && ["Problem", "Solution", "App", "Impact"].map(l => (
             <a key={l} href={`#${l.toLowerCase()}`} style={{ fontFamily: "DM Sans", fontSize: 13, color: "rgba(255,255,255,0.5)", textDecoration: "none", transition: "color 0.2s" }}
               onMouseEnter={e => e.target.style.color = "#fff"}
               onMouseLeave={e => e.target.style.color = "rgba(255,255,255,0.5)"}
             >{l}</a>
           ))}
-          <a href="#demo" style={{ fontFamily: "Syne", fontWeight: 700, fontSize: 13, background: "#E63946", color: "#fff", padding: "9px 22px", borderRadius: 100, textDecoration: "none", letterSpacing: "0.02em" }}>Watch Demo</a>
+          <a href="#demo" style={{ fontFamily: "Syne", fontWeight: 700, fontSize: isMobile ? 12 : 13, background: "#E63946", color: "#fff", padding: isMobile ? "8px 16px" : "9px 22px", borderRadius: 100, textDecoration: "none", letterSpacing: "0.02em" }}>Watch Demo</a>
         </div>
       </div>
     </nav>
@@ -80,12 +93,13 @@ function Nav() {
 /* ── Hero ────────────────────────────────────────────────────────────────── */
 function Hero() {
   const ref = useRef(null);
+  const isMobile = useMobile();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, 120]);
   const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
   return (
-    <section ref={ref} style={{ minHeight: "100vh", background: "#06060A", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden", padding: "100px 24px 60px" }}>
+    <section ref={ref} style={{ minHeight: "100vh", background: "#06060A", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden", padding: isMobile ? "80px 20px 48px" : "100px 24px 60px" }}>
       {/* background */}
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
         <div style={{ position: "absolute", top: "30%", left: "50%", transform: "translate(-50%,-50%)", width: 800, height: 800, background: "radial-gradient(circle, rgba(230,57,70,0.12) 0%, transparent 70%)", borderRadius: "50%" }} />
@@ -109,8 +123,8 @@ function Hero() {
           initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
           style={{ display: "inline-flex", alignItems: "center", gap: 12, border: "1px solid rgba(230,57,70,0.3)", background: "rgba(230,57,70,0.08)", borderRadius: 100, padding: "6px 20px", marginBottom: 32 }}
         >
-          <img src="/Atomic minds logo.webp" alt="Atomic Minds" style={{ height: 28, width: "auto", objectFit: "contain", background: "#fff", padding: "2px 4px", borderRadius: 3 }} />
-          <span style={{ fontFamily: "DM Sans", fontSize: 12, color: "rgba(255,255,255,0.6)", letterSpacing: "0.08em", textTransform: "uppercase" }}>Atomic Minds · Smart Wearable System</span>
+          <img src="/Atomic minds logo.webp" alt="Atomic Minds" style={{ height: isMobile ? 22 : 28, width: "auto", objectFit: "contain", background: "#fff", padding: "2px 4px", borderRadius: 3 }} />
+          <span style={{ fontFamily: "DM Sans", fontSize: isMobile ? 10 : 12, color: "rgba(255,255,255,0.6)", letterSpacing: "0.06em", textTransform: "uppercase" }}>{isMobile ? "Atomic Minds · Wearable" : "Atomic Minds · Smart Wearable System"}</span>
         </motion.div>
 
         {/* main headline */}
@@ -169,15 +183,16 @@ function Hero() {
 
 /* ── Problem ─────────────────────────────────────────────────────────────── */
 function Problem() {
+  const isMobile = useMobile();
   return (
-    <section id="problem" style={{ background: "#06060A", padding: "120px 24px" }}>
+    <section id="problem" style={{ background: "#06060A", padding: isMobile ? "72px 20px" : "120px 24px" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <Reveal>
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
             <div style={{ width: 32, height: 1, background: "#E63946" }} />
             <span style={{ fontFamily: "DM Sans", fontSize: 12, color: "#E63946", textTransform: "uppercase", letterSpacing: "0.12em" }}>The Problem</span>
           </div>
-          <h2 style={{ fontFamily: "Syne", fontWeight: 800, fontSize: "clamp(36px, 5vw, 64px)", color: "#fff", lineHeight: 1.05, margin: "0 0 60px", letterSpacing: "-0.02em" }}>
+          <h2 style={{ fontFamily: "Syne", fontWeight: 800, fontSize: "clamp(28px, 5vw, 64px)", color: "#fff", lineHeight: 1.05, margin: isMobile ? "0 0 36px" : "0 0 60px", letterSpacing: "-0.02em" }}>
             Athletes are getting injured.<br /><span style={{ color: "rgba(255,255,255,0.25)" }}>And we're not stopping it.</span>
           </h2>
         </Reveal>
@@ -216,6 +231,7 @@ function Problem() {
 
 /* ── Solution / System ───────────────────────────────────────────────────── */
 function Solution() {
+  const isMobile = useMobile();
   const steps = [
     {
       num: "01", icon: "◈", color: "#00D4FF", title: "Sense",
@@ -235,7 +251,7 @@ function Solution() {
   ];
 
   return (
-    <section id="solution" style={{ background: "#080810", padding: "120px 24px" }}>
+    <section id="solution" style={{ background: "#080810", padding: isMobile ? "72px 20px" : "120px 24px" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <Reveal>
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
@@ -280,6 +296,7 @@ function Solution() {
 /* ── App Screenshots (auto-scroll) ───────────────────────────────────────── */
 function AppScreens() {
   const [active, setActive] = useState(0);
+  const isMobile = useMobile();
   const screens = [
     { img: "/screen1.png", label: "Dashboard", desc: "Real-time biometric overview with synced vitals — HR, SpO₂, Fatigue, Injury Risk — plus HRV, Body Temp, and Muscle Load." },
     { img: "/screen2.png", label: "Injury Risk", desc: "Body stress heatmap with 3D model, medical risk thresholds, and risk percentage display." },
@@ -297,22 +314,22 @@ function AppScreens() {
   }, []);
 
   return (
-    <section id="app" style={{ background: "#06060A", padding: "120px 24px" }}>
+    <section id="app" style={{ background: "#06060A", padding: isMobile ? "72px 20px" : "120px 24px" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <Reveal>
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
             <div style={{ width: 32, height: 1, background: "#A78BFA" }} />
             <span style={{ fontFamily: "DM Sans", fontSize: 12, color: "#A78BFA", textTransform: "uppercase", letterSpacing: "0.12em" }}>Mobile App</span>
           </div>
-          <h2 style={{ fontFamily: "Syne", fontWeight: 800, fontSize: "clamp(36px,5vw,64px)", color: "#fff", margin: "0 0 56px", letterSpacing: "-0.02em", lineHeight: 1.05 }}>
+          <h2 style={{ fontFamily: "Syne", fontWeight: 800, fontSize: "clamp(28px,5vw,64px)", color: "#fff", margin: isMobile ? "0 0 36px" : "0 0 56px", letterSpacing: "-0.02em", lineHeight: 1.05 }}>
             Seven screens.<br /><span style={{ color: "rgba(255,255,255,0.25)" }}>Zero guesswork.</span>
           </h2>
         </Reveal>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1.4fr", gap: 48, alignItems: "center" }}>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1.4fr", gap: isMobile ? 32 : 48, alignItems: "center" }}>
           {/* phone frame */}
           <Reveal>
-            <div style={{ position: "relative", maxWidth: 300, margin: "0 auto" }}>
+            <div style={{ position: "relative", maxWidth: isMobile ? 220 : 300, margin: "0 auto" }}>
               <div style={{ border: "1px solid rgba(255,255,255,0.1)", borderRadius: 40, overflow: "hidden", background: "#111", boxShadow: "0 40px 120px rgba(0,0,0,0.8), 0 0 60px rgba(167,139,250,0.1)" }}>
                 <div style={{ height: 24, background: "#0a0a0a", display: "flex", justifyContent: "center", alignItems: "center" }}>
                   <div style={{ width: 80, height: 6, background: "rgba(255,255,255,0.15)", borderRadius: 100 }} />
@@ -385,20 +402,21 @@ function AppScreens() {
 
 /* ── Impact ──────────────────────────────────────────────────────────────── */
 function Impact() {
+  const isMobile = useMobile();
   return (
-    <section id="impact" style={{ background: "#080810", padding: "120px 24px" }}>
+    <section id="impact" style={{ background: "#080810", padding: isMobile ? "72px 20px" : "120px 24px" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <Reveal>
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
             <div style={{ width: 32, height: 1, background: "#34D399" }} />
             <span style={{ fontFamily: "DM Sans", fontSize: 12, color: "#34D399", textTransform: "uppercase", letterSpacing: "0.12em" }}>Feasibility & Impact</span>
           </div>
-          <h2 style={{ fontFamily: "Syne", fontWeight: 800, fontSize: "clamp(36px,5vw,64px)", color: "#fff", margin: "0 0 72px", letterSpacing: "-0.02em", lineHeight: 1.05 }}>
+          <h2 style={{ fontFamily: "Syne", fontWeight: 800, fontSize: "clamp(28px,5vw,64px)", color: "#fff", margin: isMobile ? "0 0 40px" : "0 0 72px", letterSpacing: "-0.02em", lineHeight: 1.05 }}>
             Built to scale.<br /><span style={{ color: "rgba(255,255,255,0.25)" }}>Priced for everyone.</span>
           </h2>
         </Reveal>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 24 }}>
           {/* cost */}
           <Reveal>
             <div style={{ border: "1px solid rgba(255,255,255,0.07)", borderRadius: 24, padding: "40px", background: "rgba(255,255,255,0.02)", gridColumn: "span 1" }}>
@@ -456,8 +474,9 @@ function Impact() {
 
 /* ── Demo ────────────────────────────────────────────────────────────────── */
 function Demo() {
+  const isMobile = useMobile();
   return (
-    <section id="demo" style={{ background: "#06060A", padding: "120px 24px" }}>
+    <section id="demo" style={{ background: "#06060A", padding: isMobile ? "72px 20px" : "120px 24px" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <Reveal>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 16 }}>
@@ -470,10 +489,10 @@ function Demo() {
         </Reveal>
 
         <Reveal delay={0.15}>
-          <div style={{ display: "flex", gap: 20, alignItems: "flex-start", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: 20, alignItems: "flex-start" }}>
 
             {/* Portrait — Wearable close-up */}
-            <div style={{ flex: "0 0 auto", width: "clamp(200px, 28%, 320px)", display: "flex", flexDirection: "column", gap: 12 }}>
+            <div style={{ flex: isMobile ? "unset" : "0 0 auto", width: isMobile ? "100%" : "clamp(200px, 28%, 320px)", display: "flex", flexDirection: "column", gap: 12 }}>
               <div style={{ border: "1px solid rgba(255,255,255,0.07)", borderRadius: 20, overflow: "hidden", boxShadow: "0 24px 80px rgba(0,0,0,0.6)" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "10px 16px", background: "rgba(255,255,255,0.03)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
                   <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#E63946", opacity: 0.8 }} />
@@ -526,8 +545,9 @@ function Demo() {
 
 /* ── Team ────────────────────────────────────────────────────────────────── */
 function Team() {
+  const isMobile = useMobile();
   return (
-    <section style={{ background: "#080810", padding: "120px 24px" }}>
+    <section style={{ background: "#080810", padding: isMobile ? "72px 20px" : "120px 24px" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <Reveal>
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
@@ -562,8 +582,9 @@ function Team() {
 
 /* ── CTA ─────────────────────────────────────────────────────────────────── */
 function CTA() {
+  const isMobile = useMobile();
   return (
-    <section style={{ background: "#06060A", padding: "120px 24px", position: "relative", overflow: "hidden" }}>
+    <section style={{ background: "#06060A", padding: isMobile ? "72px 20px" : "120px 24px", position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 50%, rgba(230,57,70,0.1) 0%, transparent 70%)", pointerEvents: "none" }} />
       <Reveal className="relative z-10">
         <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
@@ -607,8 +628,9 @@ function Footer() {
 
 /* ── Validation / Proof ──────────────────────────────────────────────────── */
 function Proof() {
+  const isMobile = useMobile();
   return (
-    <section style={{ background: "#06060A", padding: "120px 24px" }}>
+    <section style={{ background: "#06060A", padding: isMobile ? "72px 20px" : "120px 24px" }}>
       <div style={{ maxWidth: 1000, margin: "0 auto" }}>
         <Reveal>
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16, justifyContent: "center" }}>
