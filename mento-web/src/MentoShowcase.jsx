@@ -326,75 +326,109 @@ function AppScreens() {
           </h2>
         </Reveal>
 
-        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1.4fr", gap: isMobile ? 32 : 48, alignItems: "center" }}>
-          {/* phone frame */}
+        {isMobile ? (
+          /* ── Mobile: phone + tap grid ──────────────────────────────────── */
           <Reveal>
-            <div style={{ position: "relative", maxWidth: isMobile ? 220 : 300, margin: "0 auto" }}>
-              <div style={{ border: "1px solid rgba(255,255,255,0.1)", borderRadius: 40, overflow: "hidden", background: "#111", boxShadow: "0 40px 120px rgba(0,0,0,0.8), 0 0 60px rgba(167,139,250,0.1)" }}>
-                <div style={{ height: 24, background: "#0a0a0a", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                  <div style={{ width: 80, height: 6, background: "rgba(255,255,255,0.15)", borderRadius: 100 }} />
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 24 }}>
+              {/* phone frame */}
+              <div style={{ position: "relative", width: 220 }}>
+                <div style={{ border: "1px solid rgba(255,255,255,0.1)", borderRadius: 36, overflow: "hidden", background: "#111", boxShadow: "0 40px 120px rgba(0,0,0,0.8), 0 0 60px rgba(167,139,250,0.15)" }}>
+                  <div style={{ height: 20, background: "#0a0a0a", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <div style={{ width: 60, height: 5, background: "rgba(255,255,255,0.15)", borderRadius: 100 }} />
+                  </div>
+                  <AnimatePresence mode="wait">
+                    <motion.img key={active} src={screens[active].img} alt={screens[active].label}
+                      initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }}
+                      transition={{ duration: 0.35 }} style={{ width: "100%", display: "block" }} />
+                  </AnimatePresence>
                 </div>
-                <AnimatePresence mode="wait">
-                  <motion.img
-                    key={active}
-                    src={screens[active].img}
-                    alt={screens[active].label}
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -16 }}
-                    transition={{ duration: 0.4 }}
-                    style={{ width: "100%", display: "block" }}
-                  />
-                </AnimatePresence>
+                {/* progress bar under phone */}
+                <div style={{ height: 2, background: "rgba(167,139,250,0.12)", borderRadius: 100, marginTop: 16, overflow: "hidden" }}>
+                  <motion.div key={active} initial={{ width: "0%" }} animate={{ width: "100%" }} transition={{ duration: 8.0, ease: "linear" }}
+                    style={{ height: "100%", background: "#A78BFA", borderRadius: 100 }} />
+                </div>
               </div>
-              {/* progress dots */}
-              <div style={{ display: "flex", justifyContent: "center", gap: 6, marginTop: 20 }}>
-                {screens.map((_, i) => (
-                  <button key={i} onClick={() => setActive(i)}
-                    style={{ width: i === active ? 20 : 6, height: 6, borderRadius: 100, background: i === active ? "#A78BFA" : "rgba(255,255,255,0.15)", border: "none", cursor: "pointer", padding: 0, transition: "all 0.3s" }} />
+
+              {/* current screen label */}
+              <div style={{ textAlign: "center" }}>
+                <div style={{ fontFamily: "Bebas Neue", fontSize: 13, color: "#A78BFA", letterSpacing: "0.1em", marginBottom: 4 }}>
+                  {String(active + 1).padStart(2, "0")} / 07
+                </div>
+                <div style={{ fontFamily: "Syne", fontWeight: 700, fontSize: 18, color: "#fff", marginBottom: 6 }}>{screens[active].label}</div>
+                <div style={{ fontFamily: "DM Sans", fontSize: 12, color: "rgba(255,255,255,0.4)", lineHeight: 1.5, maxWidth: 280 }}>{screens[active].desc}</div>
+              </div>
+
+              {/* tap grid — all 7 screens as pill buttons */}
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center", width: "100%" }}>
+                {screens.map((s, i) => (
+                  <button key={s.label} onClick={() => setActive(i)} style={{
+                    fontFamily: "Syne", fontWeight: 700, fontSize: 12,
+                    background: active === i ? "rgba(167,139,250,0.15)" : "rgba(255,255,255,0.04)",
+                    border: active === i ? "1px solid rgba(167,139,250,0.5)" : "1px solid rgba(255,255,255,0.07)",
+                    color: active === i ? "#A78BFA" : "rgba(255,255,255,0.35)",
+                    borderRadius: 100, padding: "8px 16px", cursor: "pointer", transition: "all 0.2s"
+                  }}>{s.label}</button>
                 ))}
               </div>
             </div>
           </Reveal>
-
-          {/* screen list */}
-          <Reveal delay={0.15}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {screens.map((s, i) => (
-                <button key={s.label} onClick={() => setActive(i)}
-                  style={{
-                    textAlign: "left",
-                    background: active === i ? "rgba(167,139,250,0.08)" : "transparent",
-                    border: active === i ? "1px solid rgba(167,139,250,0.3)" : "1px solid transparent",
-                    borderRadius: 14, padding: "16px 20px", cursor: "pointer",
-                    transition: "all 0.25s", display: "flex", alignItems: "center", gap: 16
-                  }}>
-                  <span style={{ fontFamily: "Bebas Neue", fontSize: 20, color: active === i ? "#A78BFA" : "rgba(255,255,255,0.2)", minWidth: 28, transition: "color 0.2s" }}>
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontFamily: "Syne", fontWeight: 700, fontSize: 15, color: active === i ? "#fff" : "rgba(255,255,255,0.4)", transition: "color 0.2s" }}>{s.label}</div>
-                    <AnimatePresence>
-                      {active === i && (
-                        <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.2 }}
-                          style={{ fontFamily: "DM Sans", fontSize: 12, color: "rgba(255,255,255,0.4)", marginTop: 4, lineHeight: 1.5 }}>
-                          {s.desc}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+        ) : (
+          /* ── Desktop: side by side ─────────────────────────────────────── */
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1.4fr", gap: 48, alignItems: "center" }}>
+            {/* phone frame */}
+            <Reveal>
+              <div style={{ position: "relative", maxWidth: 300, margin: "0 auto" }}>
+                <div style={{ border: "1px solid rgba(255,255,255,0.1)", borderRadius: 40, overflow: "hidden", background: "#111", boxShadow: "0 40px 120px rgba(0,0,0,0.8), 0 0 60px rgba(167,139,250,0.1)" }}>
+                  <div style={{ height: 24, background: "#0a0a0a", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <div style={{ width: 80, height: 6, background: "rgba(255,255,255,0.15)", borderRadius: 100 }} />
                   </div>
-                  {/* auto-progress bar */}
-                  {active === i && (
-                    <div style={{ width: 3, height: 40, background: "rgba(167,139,250,0.15)", borderRadius: 100, overflow: "hidden", flexShrink: 0 }}>
-                      <motion.div key={active} initial={{ height: "0%" }} animate={{ height: "100%" }} transition={{ duration: 8.0, ease: "linear" }}
-                        style={{ width: "100%", background: "#A78BFA", borderRadius: 100 }} />
+                  <AnimatePresence mode="wait">
+                    <motion.img key={active} src={screens[active].img} alt={screens[active].label}
+                      initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }}
+                      transition={{ duration: 0.4 }} style={{ width: "100%", display: "block" }} />
+                  </AnimatePresence>
+                </div>
+                <div style={{ display: "flex", justifyContent: "center", gap: 6, marginTop: 20 }}>
+                  {screens.map((_, i) => (
+                    <button key={i} onClick={() => setActive(i)}
+                      style={{ width: i === active ? 20 : 6, height: 6, borderRadius: 100, background: i === active ? "#A78BFA" : "rgba(255,255,255,0.15)", border: "none", cursor: "pointer", padding: 0, transition: "all 0.3s" }} />
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+
+            {/* screen list */}
+            <Reveal delay={0.15}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {screens.map((s, i) => (
+                  <button key={s.label} onClick={() => setActive(i)}
+                    style={{ textAlign: "left", background: active === i ? "rgba(167,139,250,0.08)" : "transparent", border: active === i ? "1px solid rgba(167,139,250,0.3)" : "1px solid transparent", borderRadius: 14, padding: "16px 20px", cursor: "pointer", transition: "all 0.25s", display: "flex", alignItems: "center", gap: 16 }}>
+                    <span style={{ fontFamily: "Bebas Neue", fontSize: 20, color: active === i ? "#A78BFA" : "rgba(255,255,255,0.2)", minWidth: 28, transition: "color 0.2s" }}>
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontFamily: "Syne", fontWeight: 700, fontSize: 15, color: active === i ? "#fff" : "rgba(255,255,255,0.4)", transition: "color 0.2s" }}>{s.label}</div>
+                      <AnimatePresence>
+                        {active === i && (
+                          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.2 }}
+                            style={{ fontFamily: "DM Sans", fontSize: 12, color: "rgba(255,255,255,0.4)", marginTop: 4, lineHeight: 1.5 }}>
+                            {s.desc}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
-                  )}
-                </button>
-              ))}
-            </div>
-          </Reveal>
-        </div>
+                    {active === i && (
+                      <div style={{ width: 3, height: 40, background: "rgba(167,139,250,0.15)", borderRadius: 100, overflow: "hidden", flexShrink: 0 }}>
+                        <motion.div key={active} initial={{ height: "0%" }} animate={{ height: "100%" }} transition={{ duration: 8.0, ease: "linear" }}
+                          style={{ width: "100%", background: "#A78BFA", borderRadius: 100 }} />
+                      </div>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </Reveal>
+          </div>
+        )}
       </div>
     </section>
   );
